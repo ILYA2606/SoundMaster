@@ -105,6 +105,11 @@ typedef NS_ENUM(NSUInteger, ExtendedAVAudioPlayerType) {
 
 - (void)playEffect:(NSString *)fileName relativeVolume:(CGFloat)relativeVolume
 {
+    [self playEffect:fileName relativeVolume:relativeVolume pan:0.0];
+}
+
+- (void)playEffect:(NSString *)fileName relativeVolume:(CGFloat)relativeVolume pan:(CGFloat)pan
+{
     NSMutableSet *effectCopies = self.effects[fileName];
     ExtendedAVAudioPlayer *player;
     for (ExtendedAVAudioPlayer *tempPlayer in effectCopies) {
@@ -128,6 +133,7 @@ typedef NS_ENUM(NSUInteger, ExtendedAVAudioPlayerType) {
     }
     player.relativeVolume = relativeVolume;
     player.volume = self.effectsVolume;
+    player.pan = pan;
     [player play];
 }
 
@@ -150,6 +156,14 @@ typedef NS_ENUM(NSUInteger, ExtendedAVAudioPlayerType) {
 - (void)setRelativeVolume:(CGFloat)relativeVolume effect:(NSString *)fileName
 {
     self.effectsRelativeVolumes[fileName] = @(relativeVolume);
+}
+
+- (void)setPan:(CGFloat)pan effect:(NSString *)fileName
+{
+    NSMutableSet *effectCopies = self.effects[fileName];
+    for (ExtendedAVAudioPlayer *player in effectCopies) {
+        player.pan = pan;
+    }
 }
 
 #pragma mark Music
@@ -200,6 +214,9 @@ typedef NS_ENUM(NSUInteger, ExtendedAVAudioPlayerType) {
 - (void)pauseMusicWithFadeOut:(BOOL)fadeOut
 {
     ExtendedAVAudioPlayer *player = self.musics[self.currentMusicPath];
+    if(!player){
+        return;
+    }
     if (player.isPlaying) {
         player.volume = self.musicVolume;
         if (fadeOut) {
@@ -219,6 +236,9 @@ typedef NS_ENUM(NSUInteger, ExtendedAVAudioPlayerType) {
 - (void)resumeMusicWithFadeIn:(BOOL)fadeIn
 {
     ExtendedAVAudioPlayer *player = self.musics[self.currentMusicPath];
+    if(!player){
+        return;
+    }
     [player play];
     player.volume = self.musicVolume;
     if (fadeIn) {

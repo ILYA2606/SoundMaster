@@ -30,6 +30,16 @@ typedef void (^MusicCompletionBlock)(void);
  not resetting the value previously setted with -setRelativeVolume:effect: method. */
 - (void)playEffect:(NSString *)fileName relativeVolume:(CGFloat)relativeVolume;
 
+/**
+ Plays sound effect with specified name and relative volume ingoring and stereo pan position
+ 
+ @author ILYA2606
+ @param fileName file name for effect
+ @param relativeVolume relative volume [0.0;1.0]
+ @param pan stereo pan position [-1.0;1.0]. Default is 0.0
+ */
+- (void)playEffect:(NSString *)fileName relativeVolume:(CGFloat)relativeVolume pan:(CGFloat)pan;
+
 /** Use this method to preload sound effect to the buffer before
  calling -playEffect: for the first time. @discussion Significantly
  increases performance of the first effect's playback start @discussion */
@@ -40,6 +50,9 @@ typedef void (^MusicCompletionBlock)(void);
  level. -playEffect:relativeVolume: playes effect with specified relative volume
  but does no reset previously setted value. */
 - (void)setRelativeVolume:(CGFloat)relativeVolume effect:(NSString *)fileName;
+
+/** Use this method to set stereo pan position for specified sound effect on the go.*/
+- (void)setPan:(CGFloat)pan effect:(NSString *)fileName;
 
 #pragma mark - Music
 

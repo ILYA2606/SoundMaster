@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UISlider *musicVolumeSlider;
 @property (weak, nonatomic) IBOutlet UISlider *effectsVolumeSlider;
+@property (weak, nonatomic) IBOutlet UISlider *effectsPanSlider;
 @property (weak, nonatomic) IBOutlet UILabel *relativeVolumeLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *relativeVolumeLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *relativeVolumeLabel3;
@@ -35,7 +36,7 @@
 {
     [super viewDidLoad];
 
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 658.f);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 740);
     [self.scrollView flashScrollIndicators];
 
     self.relativeVolumeLabel1.text = [NSString stringWithFormat:@"%.f%%", self.relativeVolumeStepper1.value * 100];
@@ -62,6 +63,12 @@
     [SoundMaster sharedMaster].effectsVolume = self.effectsVolumeSlider.value;
 }
 
+- (IBAction)effectsPanSliderChanged:(id)sender {
+    [[SoundMaster sharedMaster] setPan:self.effectsPanSlider.value effect:@"kick.caf"];
+    [[SoundMaster sharedMaster] setPan:self.effectsPanSlider.value effect:@"shot.caf"];
+    [[SoundMaster sharedMaster] setPan:self.effectsPanSlider.value effect:@"dub.caf"];
+}
+
 - (IBAction)playMusicBtn:(id)sender
 {
     [[SoundMaster sharedMaster] playMusic:@"loop_1.caf" loop:self.musicLoopsSwitch.on fadeIn:self.musicFadeInSwitch.on];
@@ -79,17 +86,17 @@
 
 - (IBAction)playEffect1Btn:(id)sender
 {
-    [[SoundMaster sharedMaster] playEffect:@"kick.caf" relativeVolume:self.relativeVolumeStepper1.value];
+    [[SoundMaster sharedMaster] playEffect:@"kick.caf" relativeVolume:self.relativeVolumeStepper1.value pan:self.effectsPanSlider.value];
 }
 
 - (IBAction)playEffect2Btn:(id)sender
 {
-    [[SoundMaster sharedMaster] playEffect:@"shot.caf" relativeVolume:self.relativeVolumeStepper2.value];
+    [[SoundMaster sharedMaster] playEffect:@"shot.caf" relativeVolume:self.relativeVolumeStepper2.value pan:self.effectsPanSlider.value];
 }
 
 - (IBAction)playEffect3Btn:(id)sender
 {
-    [[SoundMaster sharedMaster] playEffect:@"dub.caf" relativeVolume:self.relativeVolumeStepper3.value];
+    [[SoundMaster sharedMaster] playEffect:@"dub.caf" relativeVolume:self.relativeVolumeStepper3.value pan:self.effectsPanSlider.value];
 }
 
 - (IBAction)relativeVolumeStepper1Changed:(id)sender
